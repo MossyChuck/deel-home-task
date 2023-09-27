@@ -1,0 +1,2 @@
+module.exports.MAX_DEPOSIT_AMOUNT_COEFFICIENT = 0.25;
+module.exports.DEFAULT_LIMIT = 1000;
