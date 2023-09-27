@@ -1,5 +1,6 @@
 const {Op, Sequelize} = require('sequelize');
 const {Router} = require('express');
+const {BEST_CLIENT_DEFAULT_LIMIT} = require('../constants');
 
 async function findBestProfession(req, res) {
     const sequelize = req.app.get('sequelize');
@@ -36,6 +37,10 @@ async function findBestProfession(req, res) {
         raw: true,
     });
 
+    if (!professionInfo || !professionInfo.profession) {
+        return res.status(404).end();
+    }
+
     return res.json({profession: professionInfo.profession});
 }
 
@@ -45,7 +50,7 @@ async function findBestClients(req, res) {
 
     const start = req.query.start ? new Date(req.query.start) : new Date(0);
     const end = req.query.end ? new Date(req.query.end) : new Date();
-    const limit = req.query.limit || 2; // todo: move to constants
+    const limit = req.query.limit || BEST_CLIENT_DEFAULT_LIMIT;
 
     const bestClients = await Job.findAll({
         group: 'Contract.Client.id',
